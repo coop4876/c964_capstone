@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Workout Analysis</title>
     <style>
-        .plot-container {
+        .vis-container {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
             justify-content: center;
         }
-        .plot-container img {
+        .vis-container img {
             border: 1px solid #ddd;
             border-radius: 5px;
             padding: 5px;
@@ -28,18 +28,31 @@
     <h1>Workout Efficiency Analysis</h1>
     <h2>Scatter Plots: Avg_BPM vs Calories_Burned</h2>
 
-    <div class="plot-container">
+    <div class="vis-container">
         {% for workout, plot_url in plots.items() %}
         <div>
             <h3>{{ workout }}</h3>
             <img src="data:image/png;base64,{{ plot_url }}" alt="{{ workout }} Scatter Plot">
         </div>
         {% endfor %}
-    </div>
+    </div><br><br>
 
-    <div class="matrix-container">
-        <h2>Correlation Matrix</h2>
-        <img src="data:image/png;base64,{{ correlation_matrix }}" alt="Correlation Matrix Heatmap">
+    <h2>Correlational Matrices</h2>
+    <div class="vis-container">
+        {% for workout, correlation_matrix in correlation_matrices.items() %}
+        <div>
+            <h2>{{ workout }}</h2>
+            <img src="data:image/png;base64,{{ correlation_matrix }}" alt="Correlation Matrix Heatmap">
+        </div>
+        {% endfor %}
+    </div><br><br>
+
+    <h2>Box Plots</h2>
+    <div class="vis-container">
+        <!-- <h2>Box Plots by Workout Type</h2> -->
+        {% if box_plot %}
+        <img src="data:image/png;base64,{{ box_plot }}" alt="Box Plot">
+        {% endif %}
     </div>
 </body>
 {% endblock %}
