@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block head%}
+<title>BMI Result</title>
+{% endblock %}
+
+{% block body %}
+<div class="'content">
+    <h1 style="text-align: center">Your BMI Result</h1>
+    <p>Your BMI is: {{ bmi | round(2) }}</p>
+    <a href="/bmi.html">Calculate Again</a>
+</div>
+{% endblock %}
