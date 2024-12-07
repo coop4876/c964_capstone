@@ -1,9 +1,9 @@
 import matplotlib
 matplotlib.use('Agg')
 
-from flask import Flask, render_template, request, redirect, url_for
+# from flask import Flask, render_template, request, redirect, url_for
 import matplotlib.pyplot as plt
-import pandas as pd
+# import pandas as pd
 import seaborn as sns
 import io
 import base64

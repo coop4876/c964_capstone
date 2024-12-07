@@ -19,6 +19,19 @@
             width: 400px;
             height: auto;
         }
+        .boxplot-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .boxplot-container img {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px;
+            width: 800px;
+            height: auto;
+        }
     </style>
 </head>
 {% endblock %}
@@ -48,11 +61,10 @@
     </div><br><br>
 
     <h2>Box Plots</h2>
-    <div class="vis-container">
-        <!-- <h2>Box Plots by Workout Type</h2> -->
+    <div class="boxplot-container">
         {% if box_plot %}
         <img src="data:image/png;base64,{{ box_plot }}" alt="Box Plot">
         {% endif %}
-    </div>
+    </div><br><br><br><br>
 </body>
 {% endblock %}
