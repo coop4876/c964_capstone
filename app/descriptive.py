@@ -1,9 +1,7 @@
 import matplotlib
 matplotlib.use('Agg')
 
-# from flask import Flask, render_template, request, redirect, url_for
 import matplotlib.pyplot as plt
-# import pandas as pd
 import seaborn as sns
 import io
 import base64
@@ -36,8 +34,8 @@ class Descriptive:
     def generate_correlation_matrix(self, df, workout_type):
         filtered_df = df[df["Workout_Type"] == workout_type]
 
-        renamed_df = filtered_df.rename(columns={"Session_Duration (hours)": "Duration"})
-        correlation_matrix = renamed_df[["BMI", "Fat_Percentage", "Avg_BPM", "Resting_BPM", "Duration", "Experience_Level", "Calories_Burned"]].corr()
+        renamed_df = filtered_df.rename(columns={"Session_Duration (hours)": "Duration", "Workout_Frequency (days/week)": "Frequency"})
+        correlation_matrix = renamed_df[["Age", "Frequency", "BMI", "Fat_Percentage", "Avg_BPM", "Resting_BPM", "Duration", "Experience_Level", "Calories_Burned"]].corr()
 
         plt.figure(figsize=(6,4))
         sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", fmt=".2f")
