@@ -1,18 +1,18 @@
-import pandas as pd
-import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+
+from utility import Utility
+utility = Utility()
 
 class Predictive:
     def __init__(self):
         pass
 
-    def get_calorie_prediction(self, input_data, workout_type):
-        df = pd.read_csv("gym_members_exercise_tracking.csv")
-        df = df.rename(columns={"Session_Duration (hours)": "Duration", "Workout_Frequency (days/week)": "Frequency"})
-        filtered_df = df[df["Workout_Type"] == workout_type]
+    def get_calorie_prediction(self, df, user_input_data, workout_type):
+        # df = pd.read_csv("gym_members_exercise_tracking.csv")
+        # df = df.rename(columns={"Session_Duration (hours)": "Duration", "Workout_Frequency (days/week)": "Frequency"})
+        filtered_df = utility.filter_table_by_workout(df, workout_type)
 
-        #todo add fat %?
         features = ["Avg_BPM", "Duration", "Frequency", "Experience_Level"]
         target = "Calories_Burned"
 
@@ -24,4 +24,4 @@ class Predictive:
         model = LinearRegression()
         model.fit(X_train, y_train)
 
-        return model.predict(input_data)[0]
+        return model.predict(user_input_data)[0]

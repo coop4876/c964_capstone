@@ -4,13 +4,16 @@ import numpy as np
 
 from descriptive import Descriptive
 from predictive import Predictive
+from utility import Utility
 
 app = Flask(__name__)
 
 descriptive = Descriptive()
 predictive = Predictive()
+utility = Utility()
 
 df = pd.read_csv("gym_members_exercise_tracking.csv")
+df = df.rename(columns={"Session_Duration (hours)": "Duration", "Workout_Frequency (days/week)": "Frequency"})
 workout_types = ["Yoga", "HIIT", "Cardio", "Strength"]
 
 
@@ -27,7 +30,7 @@ def bmi_calculator():
         weight = float(request.form["weight"])
         height = float(request.form["height"])
 
-        bmi = (weight / (height * height)) * 703
+        bmi = utility.get_bmi(weight, height)
 
     return render_template("user_tools.html", bmi=bmi)
 
@@ -45,7 +48,7 @@ def calorie_prediction():
 
         input_data = np.array([[avg_bpm, session_duration, workout_frequency, experience_level]])
 
-        prediction = predictive.get_calorie_prediction(input_data, workout_type)
+        prediction = predictive.get_calorie_prediction(df, input_data, workout_type)
     
     return render_template('calorie_prediction.html', prediction=prediction)
 
