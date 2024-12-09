@@ -38,19 +38,26 @@ def bmi_calculator():
 @app.route('/calorie_prediction.html', methods=["GET", "POST"])
 def calorie_prediction():
     prediction = None
+    burn_comparison = None
+    importance_heatmap = None
 
     if request.method == "POST":
         avg_bpm = float(request.form['avg_bpm'])
-        session_duration = float(request.form['session_duration'])
+        session_duration = float(request.form['session_duration']) / 60
         workout_frequency = int(request.form['workout_frequency'])
         experience_level = int(request.form['experience_level'])
         workout_type = request.form['workout_type']
 
         input_data = np.array([[avg_bpm, session_duration, workout_frequency, experience_level]])
 
-        prediction = predictive.get_calorie_prediction(df, input_data, workout_type)
+        prediction_model = predictive.get_calorie_prediction_model(df, workout_type)
+        prediction = predictive.predict_calories(prediction_model, input_data)
+
+        burn_comparison = predictive.generate_comparison_chart(df, prediction)
+
+        importance_heatmap = predictive.generate_feature_importance(prediction_model)
     
-    return render_template('calorie_prediction.html', prediction=prediction)
+    return render_template('calorie_prediction.html', prediction=prediction, burn_comparison=burn_comparison, importance_heatmap=importance_heatmap)
 
 
 @app.route('/analysis.html')

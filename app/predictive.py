@@ -1,16 +1,22 @@
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
 
 from utility import Utility
 utility = Utility()
+
+#TODO normalize for time on the graphics?
+#TODO generate confidence interval based on values generated from test sets
 
 class Predictive:
     def __init__(self):
         pass
 
-    def get_calorie_prediction(self, df, user_input_data, workout_type):
-        # df = pd.read_csv("gym_members_exercise_tracking.csv")
-        # df = df.rename(columns={"Session_Duration (hours)": "Duration", "Workout_Frequency (days/week)": "Frequency"})
+    def get_calorie_prediction_model(self, df, workout_type):
         filtered_df = utility.filter_table_by_workout(df, workout_type)
 
         features = ["Avg_BPM", "Duration", "Frequency", "Experience_Level"]
@@ -24,4 +30,37 @@ class Predictive:
         model = LinearRegression()
         model.fit(X_train, y_train)
 
+        return model
+
+
+    def predict_calories(self, model, user_input_data):
         return model.predict(user_input_data)[0]
+
+
+    def generate_comparison_chart(self, df, predicted_calories):
+        avg_calories = df.groupby("Workout_Type")["Calories_Burned"].mean()
+
+        plt.figure(figsize=(8, 5))
+        sns.barplot(x=avg_calories.index, y=avg_calories.values, palette="viridis")
+        plt.axhline(predicted_calories, color='red', linestyle='--', label='Your Prediction')
+        plt.title("Comparison of Predicted Calories vs Averages")
+        plt.ylabel("Calories Burned")
+        plt.xlabel("Workout Type")
+        plt.legend()
+        plt.tight_layout()
+
+        return utility.create_plot_image(plt)
+    
+    def generate_feature_importance(self, model):
+        coefficients = model.coef_
+        features = ["Avg_BPM", "Duration", "Frequency", "Experience_Level"]
+        importance = pd.Series(coefficients, index=features)
+
+        plt.figure(figsize=(6, 4))
+        sns.barplot(x=importance.values, y=importance.index, palette="coolwarm")
+        plt.title("Feature Importance")
+        plt.xlabel("Coefficient Value")
+        plt.ylabel("Features")
+        plt.tight_layout()
+
+        return utility.create_plot_image(plt)

@@ -1,8 +1,28 @@
 {% extends 'base.html' %}
 
 {% block head%}
-<title>Calories Burned</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calories Burned</title>
+    <style>
+        .vis-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .vis-container img {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px;
+            width: 800px;
+            height: auto;
+        }
+    </style>
+</head>
 {% endblock %}
+
 
 {% block body %}
 <div class="content">
@@ -20,7 +40,7 @@
         <label for="avg_bpm">Average BPM:</label><br>
         <input type="number" step="0.1" name="avg_bpm" value="{{ request.form.get('avg_bpm', '') }}"required><br>
 
-        <label for="session_duration">Session Duration (hours):</label><br>
+        <label for="session_duration">Session Duration (minutes):</label><br>
         <input type="number" step="0.1" name="session_duration" value="{{ request.form.get('session_duration', '') }}"required><br>
 
         <label for="workout_frequency">Normal Workout Frequency (days/week):</label><br>
@@ -38,6 +58,18 @@
 
     {% if prediction is not none %}
         <h2>Predicted Calories Burned: {{ prediction | round(2) }}</h2>
-    {% endif %}
+    {% endif %}<br><br>
+
+    <div class="vis-container">
+        {% if burn_comparison %}
+        <img src="data:image/png;base64,{{ burn_comparison }}" alt="Calorie Burn Comparison">
+        {% endif %}
+    </div>
+
+    <div class="vis-container">
+        {% if importance_heatmap %}
+        <img src="data:image/png;base64,{{ importance_heatmap }}" alt="Feature Importance Heatmap">
+        {% endif %}
+    </div>
 </div>
 {% endblock %}s
