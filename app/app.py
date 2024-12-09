@@ -41,10 +41,11 @@ def calorie_prediction():
         session_duration = float(request.form['session_duration'])
         workout_frequency = int(request.form['workout_frequency'])
         experience_level = int(request.form['experience_level'])
+        workout_type = request.form['workout_type']
 
         input_data = np.array([[avg_bpm, session_duration, workout_frequency, experience_level]])
 
-        prediction = predictive.get_calorie_prediction(input_data)
+        prediction = predictive.get_calorie_prediction(input_data, workout_type)
     
     return render_template('calorie_prediction.html', prediction=prediction)
 
