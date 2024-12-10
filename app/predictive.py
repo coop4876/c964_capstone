@@ -19,16 +19,24 @@ class Predictive:
     def get_calorie_prediction_model(self, df, workout_type):
         filtered_df = utility.filter_table_by_workout(df, workout_type)
 
+
         features = ["Avg_BPM", "Duration", "Frequency", "Experience_Level"]
         target = "Calories_Burned"
 
         X = filtered_df[features]
         y = filtered_df[target]
 
-        #todo add test and return scores?
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+
         model = LinearRegression()
         model.fit(X_train, y_train)
+
+        #todo add to visualization
+        train_score = model.score(X_train, y_train)
+        test_score = model.score(X_test, y_test)
+        print(f"Train Score: {train_score}")
+        print(f"Test Score: {test_score}")
 
         return model
 
@@ -53,8 +61,9 @@ class Predictive:
     
     def generate_feature_importance(self, model):
         coefficients = model.coef_
-        features = ["Avg_BPM", "Duration", "Frequency", "Experience_Level"]
-        importance = pd.Series(coefficients, index=features)
+        # features = ["Avg_BPM", "Duration" "Frequency", "Experience_Level"]
+        importance = pd.Series(coefficients, index=["Avg_BPM", "Duration", "Frequency", "Experience_Level"])
+        importance = importance.drop("Duration")  # Remove "Duration" from the series
 
         plt.figure(figsize=(6, 4))
         sns.barplot(x=importance.values, y=importance.index, palette="coolwarm")
