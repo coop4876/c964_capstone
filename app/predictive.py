@@ -61,9 +61,8 @@ class Predictive:
     
     def generate_feature_importance(self, model):
         coefficients = model.coef_
-        # features = ["Avg_BPM", "Duration" "Frequency", "Experience_Level"]
         importance = pd.Series(coefficients, index=["Avg_BPM", "Duration", "Frequency", "Experience_Level"])
-        importance = importance.drop("Duration")  # Remove "Duration" from the series
+        importance = importance.drop("Duration") 
 
         plt.figure(figsize=(6, 4))
         sns.barplot(x=importance.values, y=importance.index, palette="coolwarm")
