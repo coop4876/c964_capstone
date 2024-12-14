@@ -40,6 +40,8 @@ def calorie_prediction():
     prediction = None
     burn_comparison = None
     importance_heatmap = None
+    error_chart = None
+    mae = None
 
     if request.method == "POST":
         avg_bpm = float(request.form['avg_bpm'])
@@ -50,7 +52,7 @@ def calorie_prediction():
 
         input_data = np.array([[avg_bpm, session_duration, workout_frequency, experience_level]])
 
-        prediction_model, train_score, test_score = predictive.get_calorie_prediction_model(df, workout_type)
+        prediction_model, train_score, test_score, mae = predictive.get_calorie_prediction_model(df, workout_type)
         prediction = predictive.predict_calories(prediction_model, input_data)
 
         burn_comparison = predictive.generate_comparison_chart(df, prediction)
@@ -59,7 +61,7 @@ def calorie_prediction():
 
         error_chart = predictive.generate_error_chart(train_score, test_score)
     
-    return render_template('calorie_prediction.html', prediction=prediction, burn_comparison=burn_comparison, importance_heatmap=importance_heatmap, error_chart=error_chart)
+    return render_template('calorie_prediction.html', prediction=prediction, burn_comparison=burn_comparison, importance_heatmap=importance_heatmap, error_chart=error_chart, mae=mae)
 
 
 @app.route('/analysis.html')

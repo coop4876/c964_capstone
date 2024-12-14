@@ -1,5 +1,6 @@
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -32,13 +33,14 @@ class Predictive:
         model = LinearRegression()
         model.fit(X_train, y_train)
 
-        #todo add to visualization
         train_score = model.score(X_train, y_train)
         test_score = model.score(X_test, y_test)
-        print(f"Train Score: {train_score}")
-        print(f"Test Score: {test_score}")
 
-        return model, train_score, test_score
+        y_pred = model.predict(X_test)
+        mae = mean_absolute_error(y_test, y_pred)
+        print(mae)
+
+        return model, train_score, test_score, mae
 
 
     def predict_calories(self, model, user_input_data):
@@ -54,7 +56,7 @@ class Predictive:
         plt.title("Comparison of Predicted Calories vs Averages")
         plt.ylabel("Calories Burned")
         plt.xlabel("Workout Type")
-        plt.legend()
+        plt.legend(loc='upper left', bbox_to_anchor=(0, 1.075), borderaxespad=0.)
         plt.tight_layout()
 
         return utility.create_plot_image(plt)
@@ -65,7 +67,7 @@ class Predictive:
         importance = importance.drop("Duration") 
 
         plt.figure(figsize=(6, 4))
-        sns.barplot(x=importance.values, y=importance.index, palette="coolwarm")
+        sns.barplot(x=importance.values, y=importance.index, palette="viridis")
         plt.title("Feature Importance")
         plt.xlabel("Coefficient Value")
         plt.ylabel("Features")
@@ -75,18 +77,19 @@ class Predictive:
 
     def generate_error_chart(self, train_score, test_score):
         plt.figure(figsize=(6, 4))
-        bars = plt.bar(["Train Score", "Test Score"], [train_score, test_score], color=["blue", "green"])
+        colors = sns.color_palette("viridis", 2)
+        bars = plt.bar(["Train Score", "Test Score"], [train_score, test_score], color=colors)
         plt.ylim(0,1)
-        plt.title("Model Performance: Train vs Test Score")
+        plt.title("Model Performance: Train vs Test")
         plt.ylabel("R² Score")
         for bar in bars:
             height = bar.get_height()
             plt.text(
                 bar.get_x() + bar.get_width() / 2,
-                height + 0.02,
+                height + 0.01,
                 f"{height:.5f}",
                 ha="center", va="bottom", fontsize=10, color="black"
             )
-        plt.tight_layout()
+            
 
         return utility.create_plot_image(plt)

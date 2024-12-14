@@ -58,7 +58,13 @@
 
     {% if prediction is not none %}
         <h2>Predicted Calories Burned: {{ prediction | round(2) }}</h2>
-    {% endif %}<br><br>
+    {% endif %}
+
+
+    {% if mae is not none %}
+        <h3>MAE Score: {{ mae | round(3) }}</h3>
+    {% endif %}
+    <br><br>
 
     <div class="vis-container">
         {% if burn_comparison %}
@@ -77,5 +83,7 @@
         <img src="data:image/png;base64,{{ error_chart }}" alt="Error Chart">
         {% endif %}
     </div><br><br>
+
+
 </div>
 {% endblock %}s

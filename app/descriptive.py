@@ -27,9 +27,12 @@ class Descriptive:
     def generate_correlation_matrix(self, df, workout_type):
         filtered_df = utility.filter_table_by_workout(df, workout_type)
 
-        correlation_matrix = filtered_df[["Age", "Frequency", "BMI", "Fat_Percentage", "Avg_BPM", "Resting_BPM", "Duration", "Experience_Level", "Calories_Burned"]].corr()
+        correlation_matrix = filtered_df[["Age", "Height (m)", "Water_Intake (liters)", "Weight (kg)", "Frequency", "BMI", "Fat_Percentage", 
+                                        "Avg_BPM", "Resting_BPM", "Duration", "Experience_Level", "Calories_Burned"]].corr()
 
-        plt.figure(figsize=(6,4))
+        
+
+        plt.figure(figsize=(10,6))
         sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", fmt=".2f")
         plt.title(f"{workout_type}:Correlation Matrix")
         plt.tight_layout()
