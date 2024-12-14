@@ -71,5 +71,11 @@
         <img src="data:image/png;base64,{{ importance_heatmap }}" alt="Feature Importance Heatmap">
         {% endif %}
     </div><br><br>
+
+    <div class="vis-container">
+        {% if error_chart %}
+        <img src="data:image/png;base64,{{ error_chart }}" alt="Error Chart">
+        {% endif %}
+    </div><br><br>
 </div>
 {% endblock %}s

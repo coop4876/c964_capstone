@@ -38,7 +38,7 @@ class Predictive:
         print(f"Train Score: {train_score}")
         print(f"Test Score: {test_score}")
 
-        return model
+        return model, train_score, test_score
 
 
     def predict_calories(self, model, user_input_data):
@@ -69,6 +69,24 @@ class Predictive:
         plt.title("Feature Importance")
         plt.xlabel("Coefficient Value")
         plt.ylabel("Features")
+        plt.tight_layout()
+
+        return utility.create_plot_image(plt)
+
+    def generate_error_chart(self, train_score, test_score):
+        plt.figure(figsize=(6, 4))
+        bars = plt.bar(["Train Score", "Test Score"], [train_score, test_score], color=["blue", "green"])
+        plt.ylim(0,1)
+        plt.title("Model Performance: Train vs Test Score")
+        plt.ylabel("R² Score")
+        for bar in bars:
+            height = bar.get_height()
+            plt.text(
+                bar.get_x() + bar.get_width() / 2,
+                height + 0.02,
+                f"{height:.5f}",
+                ha="center", va="bottom", fontsize=10, color="black"
+            )
         plt.tight_layout()
 
         return utility.create_plot_image(plt)
