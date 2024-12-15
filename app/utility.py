@@ -17,7 +17,3 @@ class Utility:
     #Function: Filters data frame based on selected workout type
     def filter_table_by_workout(self, df, workout_type):
         return df[df["Workout_Type"] == workout_type]
-
-    #Function: Calculates BMI based on user input data
-    def get_bmi(self, weight, height):
-        return (weight / (height * height)) * 703

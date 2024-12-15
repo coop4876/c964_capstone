@@ -23,21 +23,6 @@ workout_types = ["Yoga", "HIIT", "Cardio", "Strength"]
 def index():
     return render_template('index.html')
 
-# Function: Routing for user tools (BMI) page
-@app.route('/user_tools.html', methods=["GET", "POST"])
-def bmi_calculator():
-    bmi = None
-
-    #gets user input
-    if request.method == "POST":
-        weight = float(request.form["weight"])
-        height = float(request.form["height"])
-
-        bmi = utility.get_bmi(weight, height)
-
-    #returns BMI to be rendered to browser
-    return render_template("user_tools.html", bmi=bmi)
-
 # Function: Routing for calorie prediction tool page
 @app.route('/calorie_prediction.html', methods=["GET", "POST"])
 def calorie_prediction():
