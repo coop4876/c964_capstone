@@ -1,13 +1,23 @@
 body, html {
     margin: 0;
     font-family: sans-serif;
-    background-color: lightblue;
+    background-color: whitesmoke;
 }
 
 .content {
     margin: 0 auto;
     width: 400px;
+    text-align: center;
 }
+
+h1 {
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+}
+
 
 table, td, th {
     border: 1px solid #aaa;

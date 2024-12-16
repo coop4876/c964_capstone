@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block head%}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Analysis</title>
+    <style>
+        .vis-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .vis-container img {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px;
+            width: 600px;
+            height: auto;
+        }
+        .boxplot-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .boxplot-container img {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px;
+            width: 800px;
+            height: auto;
+        }
+    </style>
+</head>
+{% endblock %}
+
+{% block body %}
+<body>
+    <h1>Workout Efficiency Analysis</h1>
+    <h2>Scatter Plots: Workout Duration vs Calories_Burned</h2>
+
+    <div class="vis-container">
+        {% for workout, plot_url in plots.items() %}
+        <div>
+            <h3>{{ workout }}</h3>
+            <img src="data:image/png;base64,{{ plot_url }}" alt="{{ workout }} Scatter Plot">
+        </div>
+        {% endfor %}
+    </div><br><br>
+
+    <h2>Correlational Matrices</h2>
+    <div class="vis-container">
+        {% for workout, correlation_matrix in correlation_matrices.items() %}
+        <div>
+            <h2>{{ workout }}</h2>
+            <img src="data:image/png;base64,{{ correlation_matrix }}" alt="Correlation Matrix Heatmap">
+        </div>
+        {% endfor %}
+    </div><br><br>
+
+    <h2>Box Plots</h2>
+    <div class="boxplot-container">
+        {% if box_plot %}
+        <img src="data:image/png;base64,{{ box_plot }}" alt="Box Plot">
+        {% endif %}
+    </div><br><br><br><br>
+</body>
+{% endblock %}
